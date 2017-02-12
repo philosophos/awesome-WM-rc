@@ -1,8 +1,31 @@
-#!/usr/bin/lua
 -- File Name: rc.lua
 -- Author: philosophos<philosoph@yeah.net>
+-- GitHub: https://github.com/philosophos/awesome-WM-rc
 -- Create Time: 2017 Feb 06
--- Last modified: 2017 Feb 12
+-- Last modified: 2017 Feb 13
+--------------------------------------------------------------------------------
+-- index.In VIM,push * jump to corresponding configuration;Ctrl+o return here.
+--------------------------------------------------------------------------------
+--_Table_of_layouts_to_cover_with_awful.layout.inc,_order_matters.
+--_Create_a_launcher_widget_and_a_main_menu
+--
+-- {{{_Wibar
+    --_Create_a_textclock_widget
+    --_battery_widget
+    --_volume
+    --_CPU_utilization
+    --_CPU_temperature
+    --_CPU_frequency
+    --_Disk_IO
+    --_free_storage
+    --_WiFi_Info
+    --
+--_Right_widgets
+--
+    -- Volume_Control
+    -- Backlight_Control
+    -- Transparency_Control
+    -- Screenshot
 --------------------------------------------------------------------------------
 -- Standard awesome library
 local gears = require("gears")
@@ -62,7 +85,7 @@ editor_cmd = terminal .. " -e " .. editor
 -- However, you can use another modifier like Mod1, but it may interact with others.
 modkey = "Mod4"
 
--- Table of layouts to cover with awful.layout.inc, order matters.
+--_Table_of_layouts_to_cover_with_awful.layout.inc,_order_matters.
 awful.layout.layouts = {
     awful.layout.suit.floating,
     awful.layout.suit.tile,
@@ -99,7 +122,7 @@ end
 -- }}}
 
 -- {{{ Menu
--- Create a launcher widget and a main menu
+--_Create_a_launcher_widget_and_a_main_menu
 myawesomemenu = {
    { "hotkeys", function() return false, hotkeys_popup.show_help end},
    { "manual", terminal .. " -e man awesome" },
@@ -131,50 +154,48 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Keyboard map indicator and switcher
 mykeyboardlayout = awful.widget.keyboardlayout()
 
--- {{{ Wibar
--- Create a textclock widget
+-- {{{_Wibar
+--_Create_a_textclock_widget
 mytextclock = wibox.widget.textclock(
 '<span font="mono 12" color="#000000" background="#444444">|%b-%d %a '..
 '<span font="mono 12" color="#cccccc" background="#222222">%T </span></span>',1)
 
--- battery widget
+--_battery_widget
 batwidget = wibox.widget.textbox()
 vicious.register(batwidget,vicious.widgets.bat,
 '<span font="mono 12" color="#009900">$1$2% $3 </span>',60,"BAT0")
 
--- volume
+--_volume
 volume = wibox.widget.textbox()
 vicious.register(volume,vicious.widgets.volume,
 '<span font="mono 12" color="#cc00cc"> $2$1% </span>',nil,"Master")
 
--- CPU utilization
+--_CPU_utilization
 cpurate = wibox.widget.textbox()
 vicious.register(cpurate,vicious.widgets.cpu,
 '<span font="mono 12" color="#aaaa00">ALL: $1% '..
 '1:$2% 2:$3% 3:$4% 4:$5% 5:$6% 6:$7% 7:$8% 8:$9% </span>',1)
--- CPU temperature
+--_CPU_temperature
 cputemp = wibox.widget.textbox()
 vicious.register(cputemp,vicious.widgets.thermal,
 '<span font="NotoSans 12" color="#888800">CPU: $1℃  </span>',60,"thermal_zone0")
--- CPU frequency
+--_CPU_frequency
 cpuinf = wibox.widget.textbox()
 --cpuinf = widget({type="textbox"})
 vicious.register(cpuinf,vicious.widgets.cpuinf,
 '<span font="mono 12" color="#aaaa00" >${cpu0 mhz}Mhz </span>')
 
 
--- Disk IO
+--_Disk_IO
 diskio = wibox.widget.textbox()
 vicious.register(diskio,vicious.widgets.dio,
 '<span font="mono 12" color="#888800">IO:${sda read_kb}kb|${sda write_kb}kb,${sda read_s}s|${sda write_s}s</span>')
--- free storage
---fsicon = wibox.widget.imagebox()
---fsicon:set_image(beautiful.fsicon)
+--_free_storage
 fswidget = wibox.widget.textbox()
 vicious.register(fswidget,vicious.widgets.fs,
 '<span font="mono 12" color="#0000ff">${/ used_gb}/${/ avail_gb} GB</span>',60)
 
--- WiFi Info
+--_WiFi_Info
 wifiinfo = wibox.widget.textbox()
 vicious.register(wifiinfo,vicious.widgets.wifi,
 '<span font="mono 12" color="#cc8800">${ssid} mode:${mode} Rate:${rate}MB/s Link:${link}% ${linp}% sign:${sign} </span>',3,"wlan0")
@@ -274,7 +295,7 @@ awful.screen.connect_for_each_screen(function(s)
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { -- Right widgets
+        { --_Right_widgets
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             wibox.widget.systray(),
@@ -401,7 +422,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey }, "p", function() menubar.show() end,
               {description = "show the menubar", group = "launcher"}),
 
-    -- Volume
+    -- Volume_Control
     awful.key({},"XF86AudioLowerVolume", function () awful.spawn("amixer -q set Master 2db-") end,
         {description = "audio lower volume", group = "Volume"}),
     awful.key({},"XF86AudioRaiseVolume", function () awful.spawn("amixer -q set Master 2db+") end,
@@ -409,7 +430,7 @@ globalkeys = awful.util.table.join(
     awful.key({},"XF86AudioMute", function () awful.spawn("amixer -q set Master toggle") end,
         {description = "audio mute", group = "Volume"}),
 
-    -- Backlight
+    -- Backlight_Control
     awful.key({ modkey },"Down", function () awful.spawn("xbacklight -5") end,
         {description = "decrease backlight", group = "Backlight"}),
     awful.key({ modkey },"Up", function () awful.spawn("xbacklight +5") end,
@@ -427,7 +448,7 @@ globalkeys = awful.util.table.join(
         end,
         {description = "turn off/on backlight", group = "Backlight"}),
 
-    -- Transparency
+    -- Transparency_Control
     awful.key({ modkey }, "Next", function (c) awful.spawn("transset-df --actual --inc 0.1") end,
         {description = "increase window transparency", group = "Transparency"}),
     awful.key({ modkey }, "Prior", function (c) awful.spawn("transset-df --actual --dec 0.1") end,
