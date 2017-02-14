@@ -2,7 +2,7 @@
 -- Author: philosophos<philosoph@yeah.net>
 -- GitHub: https://github.com/philosophos/awesome-WM-rc
 -- Create Time: 2017 Feb 06
--- Last modified: 2017 Feb 13
+-- Last modified: 2017 Feb 14
 --------------------------------------------------------------------------------
 -- index.In VIM,push * jump to corresponding configuration;Ctrl+o return here.
 --------------------------------------------------------------------------------
@@ -11,16 +11,21 @@
 --
 -- {{{_Wibar
     --_Create_a_textclock_widget
-    --_battery_widget
-    --_volume
-    --_CPU_utilization
-    --_CPU_temperature
-    --_CPU_frequency
+    --_Date&Time
+    --_Battery_widget
+    --_Volume
+    --_Temperature
+    --_CPU_Frequency
+    --_CPU_Utilization
+    --_Memory
     --_Disk_IO
-    --_free_storage
+    --_Free_Storage
+    --_Netspeed_widget
     --_WiFi_Info
+    --_Number_of_Pending_Updates
     --
---_Right_widgets
+--_Right_widgets_in_the_top_wibox
+--_Right_widgets_in_the_bottom_wibox
 --
     -- Volume_Control
     -- Backlight_Control
@@ -70,8 +75,6 @@ end
 -- Themes define colours, icons, font and wallpapers.
 --beautiful.init(awful.util.get_themes_dir("config") .. "themes/custom/theme.lua")
 beautiful.init("~/.config/awesome/themes/custom/theme.lua")
-
-font = "Monospace 12"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -158,48 +161,159 @@ mykeyboardlayout = awful.widget.keyboardlayout()
 --_Create_a_textclock_widget
 mytextclock = wibox.widget.textclock(
 '<span font="mono 12" color="#000000" background="#444444">|%b-%d %a '..
-'<span font="mono 12" color="#cccccc" background="#222222">%T </span></span>',1)
+'<span font="mono 12" color="#cccccc" background="#222222">%T '..
+'</span></span>',1)
 
---_battery_widget
+--_Date&Time
+datewidget = wibox.widget.textbox()
+datewidget : set_font("mono 12")
+vicious.register(datewidget, vicious.widgets.date,
+'<span color="#000000" background="#444444">|%b-%d %a '..
+'<span color="#cccccc" background="#222222">%T '..
+'</span></span>',1)
+
+--_Battery_widget
 batwidget = wibox.widget.textbox()
+batwidget : set_font("mono 12")
 vicious.register(batwidget,vicious.widgets.bat,
 '<span font="mono 12" color="#009900">$1$2% $3 </span>',60,"BAT0")
 
---_volume
+--_Volume
 volume = wibox.widget.textbox()
+volume : set_font("mono 13")
 vicious.register(volume,vicious.widgets.volume,
 '<span font="mono 12" color="#cc00cc"> $2$1% </span>',nil,"Master")
 
---_CPU_utilization
-cpurate = wibox.widget.textbox()
-vicious.register(cpurate,vicious.widgets.cpu,
-'<span font="mono 12" color="#aaaa00">ALL: $1% '..
-'1:$2% 2:$3% 3:$4% 4:$5% 5:$6% 6:$7% 7:$8% 8:$9% </span>',1)
---_CPU_temperature
-cputemp = wibox.widget.textbox()
-vicious.register(cputemp,vicious.widgets.thermal,
-'<span font="NotoSans 12" color="#888800">CPU: $1℃  </span>',60,"thermal_zone0")
---_CPU_frequency
-cpuinf = wibox.widget.textbox()
---cpuinf = widget({type="textbox"})
-vicious.register(cpuinf,vicious.widgets.cpuinf,
-'<span font="mono 12" color="#aaaa00" >${cpu0 mhz}Mhz </span>')
+--_Temperature
+temp = wibox.widget.textbox()
+temp : set_font("NotoSans 13")
+temp : set_forced_width(70)
+vicious.register(temp,vicious.widgets.thermal,
+'<span color="#cc8800"> $1℃ </span>',60,"thermal_zone0")
 
+--_CPU_Frequency
+cpuinf = wibox.widget.textbox()
+cpuinf : set_font("mono 13")
+cpuinf : set_forced_width(75)
+vicious.register(cpuinf,vicious.widgets.cpuinf,
+'<span color="#ccff00" >${cpu0 mhz}Mhz </span>')
+
+--_CPU_Utilization
+cpurate = wibox.widget.textbox()
+cpurate : set_font("mono 12")
+cpurate : set_forced_width(520)
+vicious.register(cpurate,vicious.widgets.cpu,
+'<span background="#000000" color="#ffff00">ALL: $1% '..
+'<span background="#222222" color="#ffcc00">'..
+'1:$2%  2:$3%  3:$4%  4:$5%  5:$6%  6:$7%  7:$8%  8:$9%  '..
+'</span></span>',1)
+
+--_Memory
+memwidget = wibox.widget.textbox()
+memwidget : set_font("mono 12")
+memwidget : set_forced_width(260)
+vicious.register(memwidget,vicious.widgets.mem,
+'<span background="#000000" color="#00ff00">MEM:$1% '..
+'<span background="#222222" color="#44ff00">Used:$2MB Free:$4MB '..
+'</span></span> ',1)
 
 --_Disk_IO
 diskio = wibox.widget.textbox()
+diskio : set_font("mono 12")
+diskio : set_forced_width(200)
 vicious.register(diskio,vicious.widgets.dio,
-'<span font="mono 12" color="#888800">IO:${sda read_kb}kb|${sda write_kb}kb,${sda read_s}s|${sda write_s}s</span>')
---_free_storage
-fswidget = wibox.widget.textbox()
-vicious.register(fswidget,vicious.widgets.fs,
-'<span font="mono 12" color="#0000ff">${/ used_gb}/${/ avail_gb} GB</span>',60)
+'<span background="#666666" color="#661111">IO:'..
+'<span background="#000000" color="#44ff00"> R:${sda read_kb}kb|'..
+'<span background="#000000" color="#ff4400">|W:${sda write_kb}kb '..
+'</span></span></span> ')
 
+--_Free_Storage
+fswidget = wibox.widget.textbox()
+fswidget : set_font("mono 12")
+fswidget : set_forced_width(400)
+vicious.register(fswidget,vicious.widgets.fs,
+'<span color="#8888ff">Root:${/ used_gb}/${/ avail_gb}GB '..
+'<span color="#8888ff">Var:${/var used_gb}/${/var avail_gb}GB '..
+'<span color="#8888ff">Home:${/home used_gb}/${/home avail_gb}GB '..
+'</span></span></span>',60)
+
+--_Netspeed_widget
+netspeed = wibox.widget.textbox()
+netspeed : set_font("NotoSans 12")
+vicious.register(netspeed,vicious.widgets.net,
+function(widget,args)
+    local interface = ""
+    if args["{wlan0 carrier}"] == 1 then
+        interface = "wlan0"
+    elseif args["{wlan1 carrier}"] == 1 then
+        interface = "wlan1"
+    elseif args["{eth0 carrier}"] == 1 then
+        interface = "eth0"
+    elseif args["{ethusb0 carrier}"] == 1 then
+        interface = "ethusb0"
+    elseif args["{usb0 carrier}"] == 1 then
+        interface = "usb0"
+    else
+        return ""
+    end
+    return 
+    ' <span color="#cc8800" background="#333333"> '..
+    interface..
+    ' <span color="#44ff00" background="#000000"> '..
+    args["{"..interface.." down_kb}"]..'kb↓'..
+    '<span color="#ff4400" background="#000000">'..'↑'..
+    args["{"..interface.." up_kb}"]..'kb </span></span></span> '
+end,10)
+
+function wifi(widget,args)
+    local file0 = io.open("/sys/class/net/wlan0/carrier","r")
+    if file0 then carrier0 = file0:read("*n") file0:close() end
+    local file1 = io.open("/sys/class/net/wlan1/carrier","r")
+    if file1 then carrier1 = file1:read("*n") file1:close() end
+    local file2 = io.open("/sys/class/net/wlan2/carrier","r")
+    if file2 then carrier2 = file2:read("*n") file2:close() end
+    if carrier0 == 1 then
+        return "wlan0"
+    elseif carrier1 == 1 then
+        return "wlan1"
+    elseif carrier2 == 1 then
+        return "wlan2"
+    else
+        return ""
+    end
+end
 --_WiFi_Info
 wifiinfo = wibox.widget.textbox()
+wifiinfo : set_font("mono 12")
+wifiinfo : set_forced_width(320)
 vicious.register(wifiinfo,vicious.widgets.wifi,
-'<span font="mono 12" color="#cc8800">${ssid} mode:${mode} Rate:${rate}MB/s Link:${link}% ${linp}% sign:${sign} </span>',3,"wlan0")
+function(widget,args)
+    local file0 = io.open("/sys/class/net/wlan0/carrier","r")
+    if file0 then carrier0 = file0:read("*n") file0:close() end
+    local file1 = io.open("/sys/class/net/wlan1/carrier","r")
+    if file1 then carrier1 = file1:read("*n") file1:close() end
+    local file2 = io.open("/sys/class/net/wlan2/carrier","r")
+    if file2 then carrier2 = file2:read("*n") file2:close() end
+    if carrier0 == 1 or carrier1 == 1 or carrier2 == 1 then
+        return 
+        '<span color="#00cc66"> SSID:'..args['{ssid}']..
+        '<span color="#aaaa00"> Mode:'..args['{mode}']..
+        '<span color="#aaaa00"> Chan:'..args['{chan}']..
+        --'<span color="#aaaa00"> Rate:'..args['{rate}']..
+        --'<span color="#aaaa00"> LinP:'..args['{linp}']..
+        '<span color="#aaaa00"> Sign:'..args['{sign}']..
+        '</span></span></span></span>'
+    else
+        return ""
+    end
+end
+,1,wifi(widget,args))
+--,1,"wlan0")
 
+--_Number_of_Pending_Updates
+pkg = wibox.widget.textbox()
+pkg : set_font("mono 12")
+vicious.register(pkg,vicious.widgets.pkg,"Updates:$1",3600,"Arch")
 
 -- Create a wibox for each screen and add it
 local taglist_buttons = awful.util.table.join(
@@ -282,33 +396,73 @@ awful.screen.connect_for_each_screen(function(s)
     -- Create a tasklist widget
     s.mytasklist = awful.widget.tasklist(s, awful.widget.tasklist.filter.currenttags, tasklist_buttons)
 
-    -- Create the wibox
-    s.mywibox = awful.wibar({ position = "top", screen = s })
+    -- Create the top  wibox
+    s.mytopwibox = awful.wibar({ position = "top", screen = s, height = 25 })
 
-    -- Add widgets to the wibox
-    s.mywibox:setup {
+    --_Add_widgets_to_the_top_wibox
+    s.mytopwibox:setup {
         layout = wibox.layout.align.horizontal,
-        { -- Left widgets
+        { --_Left_widgets_in_the_top_wibox
             layout = wibox.layout.fixed.horizontal,
             mylauncher,
             s.mytaglist,
             s.mypromptbox,
         },
         s.mytasklist, -- Middle widget
-        { --_Right_widgets
+        { --_Right_widgets_in_the_top_wibox
             layout = wibox.layout.fixed.horizontal,
             mykeyboardlayout,
             wibox.widget.systray(),
             --wifiinfo,
-            cputemp,
-            cpuinf,
+            netspeed,
+            --cpuinf,
             --cpurate,
-            diskio,
-            fswidget,
+            --memwidget,
+            --diskio,
+            --fswidget,
+            --pkg,
+            temp,
             volume,
             batwidget,
-            mytextclock,
+            datewidget,
+            --mytextclock,
             s.mylayoutbox,
+        },
+    }
+
+    --[
+    -- Create the bottom  wibox
+    s.mybottomwibox = awful.wibar({ position = "bottom", screen = s, height = 20 })
+
+    -- Add widgets to the bottom wibox
+    s.mybottomwibox:setup {
+        layout = wibox.layout.align.horizontal,
+        { --_Left_widgets_in_the_bottom_wibox
+            layout = wibox.layout.fixed.horizontal,
+            s.mylayoutbox,
+            --mylauncher,
+            --s.mytaglist,
+            --s.mypromptbox,
+        },
+        --s.mytasklist, -- Middle widget
+        { --_Right_widgets_in_the_bottom_wibox
+            layout = wibox.layout.fixed.horizontal,
+            --mykeyboardlayout,
+            --wibox.widget.systray(),
+            --netspeed,
+            cpuinf,
+            cpurate,
+            memwidget,
+            diskio,
+            wifiinfo,
+            fswidget,
+            pkg,
+            --temp,
+            --volume,
+            --batwidget,
+            --datewidget,
+            --mytextclock,
+            --s.mylayoutbox,
         },
     }
 end)
@@ -694,8 +848,14 @@ client.connect_signal("focus", function(c) c.border_color = beautiful.border_foc
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
 
-awful.spawn("fcitx")
-awful.spawn("xcompmgr -c -t-5 -l-5 -r4.2 -o.55 &")
---awful.spawn("urxvt")
-awful.util.spawn_with_shell("conky -bd;sleep 1 && transset-df .6 -n conky")
-awful.spawn("transset-df .8 -n urxvt")
+function run_once(prg)
+  awful.util.spawn_with_shell("pgrep -u $USER -x " .. prg .. " || (" .. prg .. ")")
+end
+--[[
+run_once("fcitx")
+run_once("xcompmgr -c -t-5 -l-5 -r4.2 -o.55 &")
+run_once("conky -bd")
+--]]
+
+awful.util.spawn_with_shell("sleep 1 && transset-df .6 -n conky")
+awful.util.spawn_with_shell("transset-df .8 -n urxvt")

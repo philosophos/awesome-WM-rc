@@ -1,14 +1,18 @@
 ####More Widgets:  
-  
-WiFi info  
-CPU temperature  
-CPU frequency  
-CPU rate  
-DiskIO  
-Free storage  
-Volume  
-Battery info  
-Date & Time  
+(require vicious)
+
+    Date & Time
+    Battery_widget
+    Volume
+    Temperature
+    CPU_Frequency
+    CPU_Utilization
+    Memory
+    Disk_IO
+    Free_Storage
+    Netspeed_widget
+    WiFi_Info
+    Number_of_Pending_Updates
   
 ####More Hotkeys:  
   
