@@ -2,7 +2,7 @@
 -- Author: philosophos<philosoph@yeah.net>
 -- GitHub: https://github.com/philosophos/awesome-WM-rc
 -- Create Time: 2017 Feb 06
--- Last modified: 2017 Feb 14
+-- Last modified: 2017 Feb 16
 --------------------------------------------------------------------------------
 -- index.In VIM,push * jump to corresponding configuration;Ctrl+o return here.
 --------------------------------------------------------------------------------
@@ -45,6 +45,8 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 local hotkeys_popup = require("awful.hotkeys_popup").widget
 local vicious = require("vicious")
+
+--for more info about vicious,see https://github.com/Mic92/vicious
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -138,6 +140,7 @@ mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesom
                                     { "URxvt", terminal },
                                     { "XTerm", "xterm" },
                                     { "FireFox", "firefox" },
+                                    { "Chrome" , "google-chrome-stable" },
                                     { "Word", "wps" },
                                     { "PPT", "wpp" },
                                     { "Execl", "et" },
@@ -176,13 +179,13 @@ vicious.register(datewidget, vicious.widgets.date,
 batwidget = wibox.widget.textbox()
 batwidget : set_font("mono 12")
 vicious.register(batwidget,vicious.widgets.bat,
-'<span font="mono 12" color="#009900">$1$2% $3 </span>',60,"BAT0")
+'<span color="#44cc00">$1$2% $3 </span>',60,"BAT0")
 
 --_Volume
 volume = wibox.widget.textbox()
 volume : set_font("mono 13")
 vicious.register(volume,vicious.widgets.volume,
-'<span font="mono 12" color="#cc00cc"> $2$1% </span>',nil,"Master")
+'<span color="#cc88cc">$2$1% </span>',nil,"Master")
 
 --_Temperature
 temp = wibox.widget.textbox()
@@ -844,8 +847,14 @@ client.connect_signal("mouse::enter", function(c)
     end
 end)
 
-client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
-client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+client.connect_signal("focus", function(c)
+    c.border_color = beautiful.border_focus
+    c.opacity = 0.8
+end)
+client.connect_signal("unfocus", function(c)
+    c.border_color = beautiful.border_normal
+    c.opacity = 0.7
+end)
 -- }}}
 
 function run_once(prg)
