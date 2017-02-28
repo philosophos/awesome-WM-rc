@@ -2,7 +2,7 @@
 -- Author: philosophos<philosoph@yeah.net>
 -- GitHub: https://github.com/philosophos/awesome-WM-rc
 -- Create Time: 2017 Feb 06
--- Last modified: 2017 Feb 16
+-- Last modified: 2017 Feb 28
 --------------------------------------------------------------------------------
 -- index.In VIM,push * jump to corresponding configuration;Ctrl+o return here.
 --------------------------------------------------------------------------------
@@ -99,8 +99,8 @@ awful.layout.layouts = {
     awful.layout.suit.tile.top,
     awful.layout.suit.fair,
     awful.layout.suit.fair.horizontal,
---    awful.layout.suit.spiral,
---    awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
 --    awful.layout.suit.max,
 --    awful.layout.suit.max.fullscreen,
     awful.layout.suit.magnifier,
@@ -214,7 +214,7 @@ vicious.register(cpurate,vicious.widgets.cpu,
 --_Memory
 memwidget = wibox.widget.textbox()
 memwidget : set_font("mono 12")
-memwidget : set_forced_width(260)
+memwidget : set_forced_width(280)
 vicious.register(memwidget,vicious.widgets.mem,
 '<span background="#000000" color="#00ff00">MEM:$1% '..
 '<span background="#222222" color="#44ff00">Used:$2MB Free:$4MB '..
@@ -223,7 +223,7 @@ vicious.register(memwidget,vicious.widgets.mem,
 --_Disk_IO
 diskio = wibox.widget.textbox()
 diskio : set_font("mono 12")
-diskio : set_forced_width(200)
+diskio : set_forced_width(240)
 vicious.register(diskio,vicious.widgets.dio,
 '<span background="#666666" color="#661111">IO:'..
 '<span background="#000000" color="#44ff00"> R:${sda read_kb}kb|'..
@@ -269,17 +269,17 @@ function(widget,args)
 end,10)
 
 function wifi(widget,args)
-    local file0 = io.open("/sys/class/net/wlan0/carrier","r")
+    local file0 = io.open("/sys/class/net/wlan0/operstate","r")
     if file0 then carrier0 = file0:read("*n") file0:close() end
-    local file1 = io.open("/sys/class/net/wlan1/carrier","r")
+    local file1 = io.open("/sys/class/net/wlan1/operstate","r")
     if file1 then carrier1 = file1:read("*n") file1:close() end
-    local file2 = io.open("/sys/class/net/wlan2/carrier","r")
+    local file2 = io.open("/sys/class/net/wlan2/operstate","r")
     if file2 then carrier2 = file2:read("*n") file2:close() end
-    if carrier0 == 1 then
+    if carrier0 == 'up' then
         return "wlan0"
-    elseif carrier1 == 1 then
+    elseif carrier1 == 'up' then
         return "wlan1"
-    elseif carrier2 == 1 then
+    elseif carrier2 == 'up' then
         return "wlan2"
     else
         return ""
@@ -291,13 +291,13 @@ wifiinfo : set_font("mono 12")
 wifiinfo : set_forced_width(320)
 vicious.register(wifiinfo,vicious.widgets.wifi,
 function(widget,args)
-    local file0 = io.open("/sys/class/net/wlan0/carrier","r")
+    local file0 = io.open("/sys/class/net/wlan0/operstate","r")
     if file0 then carrier0 = file0:read("*n") file0:close() end
-    local file1 = io.open("/sys/class/net/wlan1/carrier","r")
+    local file1 = io.open("/sys/class/net/wlan1/operstate","r")
     if file1 then carrier1 = file1:read("*n") file1:close() end
-    local file2 = io.open("/sys/class/net/wlan2/carrier","r")
+    local file2 = io.open("/sys/class/net/wlan2/operstate","r")
     if file2 then carrier2 = file2:read("*n") file2:close() end
-    if carrier0 == 1 or carrier1 == 1 or carrier2 == 1 then
+    if carrier0 == 'up' or carrier1 == 'up' or carrier2 == 'up' then
         return 
         '<span color="#00cc66"> SSID:'..args['{ssid}']..
         '<span color="#aaaa00"> Mode:'..args['{mode}']..
@@ -849,11 +849,11 @@ end)
 
 client.connect_signal("focus", function(c)
     c.border_color = beautiful.border_focus
-    c.opacity = 0.8
+    c.opacity = 0.90
 end)
 client.connect_signal("unfocus", function(c)
     c.border_color = beautiful.border_normal
-    c.opacity = 0.7
+    c.opacity = 0.75
 end)
 -- }}}
 
