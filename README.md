@@ -1,4 +1,7 @@
-####More Widgets:  
+ScreenShot
+![awesome](http://ola3xakol.bkt.clouddn.com/github/awesomeWM.jpg?imageMogr2/thumbnail/!60p)
+
+### More Widgets:  
 (require vicious)
 
     Date & Time
@@ -14,7 +17,7 @@
     WiFi_Info
     Number_of_Pending_Updates
   
-####More Hotkeys:  
+### More Hotkeys:  
   
 Volume  
 <table>
