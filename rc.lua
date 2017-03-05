@@ -2,7 +2,7 @@
 -- Author: philosophos<philosoph@yeah.net>
 -- GitHub: https://github.com/philosophos/awesome-WM-rc
 -- Create Time: 2017 Feb 06
--- Last modified: 2017 Feb 28
+-- Last modified: 2017 Mar 05
 --------------------------------------------------------------------------------
 -- index.In VIM,push * jump to corresponding configuration;Ctrl+o return here.
 --------------------------------------------------------------------------------
@@ -270,11 +270,11 @@ end,10)
 
 function wifi(widget,args)
     local file0 = io.open("/sys/class/net/wlan0/operstate","r")
-    if file0 then carrier0 = file0:read("*n") file0:close() end
+    if file0 then carrier0 = file0:read() file0:close() end
     local file1 = io.open("/sys/class/net/wlan1/operstate","r")
-    if file1 then carrier1 = file1:read("*n") file1:close() end
+    if file1 then carrier1 = file1:read() file1:close() end
     local file2 = io.open("/sys/class/net/wlan2/operstate","r")
-    if file2 then carrier2 = file2:read("*n") file2:close() end
+    if file2 then carrier2 = file2:read() file2:close() end
     if carrier0 == 'up' then
         return "wlan0"
     elseif carrier1 == 'up' then
@@ -292,11 +292,11 @@ wifiinfo : set_forced_width(320)
 vicious.register(wifiinfo,vicious.widgets.wifi,
 function(widget,args)
     local file0 = io.open("/sys/class/net/wlan0/operstate","r")
-    if file0 then carrier0 = file0:read("*n") file0:close() end
+    if file0 then carrier0 = file0:read() file0:close() end
     local file1 = io.open("/sys/class/net/wlan1/operstate","r")
-    if file1 then carrier1 = file1:read("*n") file1:close() end
+    if file1 then carrier1 = file1:read() file1:close() end
     local file2 = io.open("/sys/class/net/wlan2/operstate","r")
-    if file2 then carrier2 = file2:read("*n") file2:close() end
+    if file2 then carrier2 = file2:read() file2:close() end
     if carrier0 == 'up' or carrier1 == 'up' or carrier2 == 'up' then
         return 
         '<span color="#00cc66"> SSID:'..args['{ssid}']..
