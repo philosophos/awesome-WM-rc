@@ -49,6 +49,6 @@ select a window or rectangle with the mouse</td></tr>
 </table>
   
 The volume  control depends on alsa-utils.  
-The backlight control depends on xbacklight.  
+The backlight control depends on archlinuxcn/light or ~~extra/xorg-xbacklight~~.  
 The transparency control depends on xcompmgr & transset.  
 The screenshot function depends on scrot.  

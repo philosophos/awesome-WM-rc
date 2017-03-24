@@ -2,7 +2,7 @@
 -- Author: philosophos<philosoph@yeah.net>
 -- GitHub: https://github.com/philosophos/awesome-WM-rc
 -- Create Time: 2017 Feb 06
--- Last modified: 2017 Mar 05
+-- Last modified: 2017 Mar 24
 --------------------------------------------------------------------------------
 -- index.In VIM,push * jump to corresponding configuration;Ctrl+o return here.
 --------------------------------------------------------------------------------
@@ -588,20 +588,28 @@ globalkeys = awful.util.table.join(
         {description = "audio mute", group = "Volume"}),
 
     -- Backlight_Control
-    awful.key({ modkey },"Down", function () awful.spawn("xbacklight -5") end,
+    awful.key({ modkey },"Down", function () awful.spawn("light -U 5") end,
         {description = "decrease backlight", group = "Backlight"}),
-    awful.key({ modkey },"Up", function () awful.spawn("xbacklight +5") end,
+    awful.key({ modkey },"Up", function () awful.spawn("light -A 5") end,
         {description = "increase backlight", group = "Backlight"}),
     awful.key({ },"Pause",
         function ()
-            local f = io.popen('xbacklight -get')
+            local f = io.popen('light')
             local backlight = f:read("*n")
             if backlight > 0 then
-                backlight_old = backlight
-                awful.spawn("xbacklight =0")
+                awful.spawn("light -O")
+                awful.spawn("light -S 0")
             else
-                awful.spawn("xbacklight ="..backlight_old)
+                awful.spawn("light -I")
             end
+--            local f = io.popen('xbacklight -get')
+--            local backlight = f:read("*n")
+--            if backlight > 0 then
+--                backlight_old = backlight
+--                awful.spawn("xbacklight =0")
+--            else
+--                awful.spawn("xbacklight ="..backlight_old)
+--            end
         end,
         {description = "turn off/on backlight", group = "Backlight"}),
 
