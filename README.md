@@ -1,5 +1,6 @@
 ScreenShot
-![awesome](http://ola3xakol.bkt.clouddn.com/github/awesomeWM.jpg?imageMogr2/thumbnail/!60p)
+![awesome](http://on9we3d4u.bkt.clouddn.com/awesomeWM.jpg?imageMogr2/thumbnail/!60p)  
+![awesome](http://on9we3d4u.bkt.clouddn.com/awesomeWM1.jpg?imageMogr2/thumbnail/!60p)
 
 ### More Widgets:  
 (require vicious)
