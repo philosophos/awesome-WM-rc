@@ -53,3 +53,11 @@ The volume  control depends on alsa-utils.
 The backlight control depends on archlinuxcn/light or ~~extra/xorg-xbacklight~~.  
 The transparency control depends on xcompmgr & transset.  
 The screenshot function depends on scrot.  
+
+### More Configuration:
+
+[Conky](https://github.com/philosophos/conky.conf)       -- Lightweight System Monitor for X，Highly Configuration  
+[URxvt&XTerm](https://github.com/philosophos/Xresources) -- Classic Terminal,Lesser Dependencies  
+[TMUX](https://github.com/philosophos/tmux.conf)         -- Terminal Multiplexer,For Efficiency  
+[ZSH](https://github.com/philosophos/power-zshrc)        -- The last shell you’ll ever need  
+[VIM](https://github.com/philosophos/easy-vimrc)         -- the God of Text Editor,For Human  
