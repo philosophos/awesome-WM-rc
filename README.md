@@ -17,6 +17,7 @@ ScreenShot
     Netspeed_widget
     WiFi_Info
     Number_of_Pending_Updates
+You can use `community/cbatticon` instead of `Battery_widget`.
   
 ### More Hotkeys:  
   
